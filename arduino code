@@ -1,0 +1,51 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(rs,en,d4,d5,d6,d7);
+
+int sensor = sensorpin;
+int sensorValue = 0;
+int ledsafe =led green pin;
+int alarmled =led red pin;
+int speaker =speaker pin;
+
+void setup() {
+
+pinMode(ledsafe,OUTPUT);
+pinMode(alarmled,OUTPUT);
+pinMode(speaker,OUTPUT);
+  
+lcd.begin(16,2);
+lcd.print("#Arduino become");
+lcd.setCursor(6,1);
+lcd.print("Arabic");
+delay(2000);
+lcd.clear();
+lcd.print("this is my");
+lcd.setCursor(0,1);
+lcd.print("Gas alarm");
+delay(1000);
+lcd.clear();
+lcd.print("the value :");
+}
+
+void loop() {
+  sensorValue = analogRead(sensor);
+  int value = map(sensorValue,480,860,0,100);
+  value = constrain(value,0,100);
+  if (value > 80) {
+	tone(speaker,250);
+    digitalWrite(alarmled,HIGH);
+    digitalWrite(ledsafe,LOW);
+  }
+  else {
+    noTone(speaker);
+    digitalWrite(ledsafe,HIGH);
+    digitalWrite(alarmled,LOW);
+  }
+ 	lcd.setCursor(12,0);
+    lcd.print(value);
+  	lcd.print("%");
+  	delay(100);
+    
+
+}
